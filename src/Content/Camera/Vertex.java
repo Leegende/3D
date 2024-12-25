@@ -30,7 +30,7 @@ public class Vertex {
         renderC = ContentHandler.camera.projectTo2D(c, screenWidth, screenHeight);
 
         if (renderA == null && renderB == null && renderC == null) {
-            renderA = renderB = renderC = null;
+            renderA = renderB = renderC = new double[]{-1, -1};
         }
     }
 
@@ -42,15 +42,13 @@ public class Vertex {
             int[] yPoints = {(int) renderA[1], (int) renderB[1], (int) renderC[1]};
 
             if (isValidPolygon(xPoints, yPoints)) {
-                g.fillPolygon(xPoints, yPoints, 3);
+                g.drawPolygon(xPoints, yPoints, 3);
             }
         }
     }
 
     private boolean isValidPolygon(int[] xPoints, int[] yPoints) {
-        return (xPoints[0] != xPoints[1] || yPoints[0] != yPoints[1])
-                && (xPoints[1] != xPoints[2] || yPoints[1] != yPoints[2])
-                && (xPoints[0] != xPoints[2] || yPoints[0] != yPoints[2]);
+        return (xPoints[0] != xPoints[1] || yPoints[0] != yPoints[1]) && (xPoints[1] != xPoints[2] || yPoints[1] != yPoints[2]) && (xPoints[0] != xPoints[2] || yPoints[0] != yPoints[2]);
     }
 
 }
