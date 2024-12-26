@@ -10,15 +10,28 @@ public class Camera {
     public double pitch = 0.0;
     public double yaw = 0.0;
 
+
     public void update() {
-        for (Vertex vertex : ContentHandler.vertices) {
-            vertex.update();
+        for (Chunk chunk : ContentHandler.chunks) {
+            for (int x = 0; x < 32; x++) {
+                for (int y = 0; y < 32; y++) {
+                    for (int z = 0; z < 32; z++) {
+                        Voxel voxel = chunk.getVoxel(x, y, z);
+
+                        if (voxel != null) {
+                            for (Triangle triangle : voxel.getFaces()) {
+                                triangle.update();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     public void render(Graphics g) {
-        for (Vertex vertex : ContentHandler.vertices) {
-            vertex.render(g);
+        for (Chunk chunk : ContentHandler.chunks) {
+            chunk.render(g);
         }
     }
 
@@ -30,4 +43,6 @@ public class Camera {
                 (1 - ((Math.cos(Math.toRadians(pitch)) * (worldPos[1] - position.y) - Math.sin(Math.toRadians(pitch)) * (Math.cos(Math.toRadians(yaw)) * (worldPos[2] - position.z) - Math.sin(Math.toRadians(yaw)) * (worldPos[0] - position.x))) * (1.0 / Math.tan(Math.toRadians(fov) / 2)) * inverseZ)) * (screenHeight / 2.0)};
     }
 
+
 }
+

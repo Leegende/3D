@@ -11,9 +11,9 @@ public class InputHandler implements KeyListener, MouseWheelListener, MouseListe
     private int centerX;
     private int centerY;
     private final boolean[] movementFlags = new boolean[4];
-    private boolean spacePressed = false; // Track if Space is pressed
-    private boolean shiftPressed = false; // Track if Shift is pressed
-    private boolean inputsEnabled = true; // Flag to enable/disable inputs
+    private boolean spacePressed = false;
+    private boolean shiftPressed = false;
+    private boolean inputsEnabled = true;
 
     public InputHandler() {
         try {
@@ -22,14 +22,13 @@ public class InputHandler implements KeyListener, MouseWheelListener, MouseListe
             throw new RuntimeException(e);
         }
 
-        // Add listeners to the game's JFrame from RunTimeDefines
         RunTimeDefines.FRAME.addFocusListener(this);
         RunTimeDefines.FRAME.addWindowStateListener(this);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (!inputsEnabled) return; // Ignore input if disabled
+        if (!inputsEnabled) return;
         handleMouseMovement(e);
     }
 
@@ -57,15 +56,15 @@ public class InputHandler implements KeyListener, MouseWheelListener, MouseListe
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (!inputsEnabled) return; // Ignore input if disabled
+        if (!inputsEnabled) return;
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W -> movementFlags[0] = true;
             case KeyEvent.VK_S -> movementFlags[1] = true;
             case KeyEvent.VK_A -> movementFlags[2] = true;
             case KeyEvent.VK_D -> movementFlags[3] = true;
-            case KeyEvent.VK_SPACE -> spacePressed = true; // Space bar for upward movement
-            case KeyEvent.VK_SHIFT -> shiftPressed = true; // Shift key for downward movement
+            case KeyEvent.VK_SPACE -> spacePressed = true;
+            case KeyEvent.VK_SHIFT -> shiftPressed = true;
         }
     }
 
@@ -78,8 +77,8 @@ public class InputHandler implements KeyListener, MouseWheelListener, MouseListe
             case KeyEvent.VK_S -> movementFlags[1] = false;
             case KeyEvent.VK_A -> movementFlags[2] = false;
             case KeyEvent.VK_D -> movementFlags[3] = false;
-            case KeyEvent.VK_SPACE -> spacePressed = false; // Reset Space bar flag
-            case KeyEvent.VK_SHIFT -> shiftPressed = false; // Reset Shift key flag
+            case KeyEvent.VK_SPACE -> spacePressed = false;
+            case KeyEvent.VK_SHIFT -> shiftPressed = false;
         }
     }
 
@@ -124,26 +123,19 @@ public class InputHandler implements KeyListener, MouseWheelListener, MouseListe
 
     @Override
     public void focusGained(FocusEvent e) {
-        // Resume inputs when the window regains focus
-        System.out.println("Game regained focus.");
         inputsEnabled = true;
     }
 
     @Override
     public void focusLost(FocusEvent e) {
-        // Pause inputs when the window loses focus
-        System.out.println("Game lost focus.");
         inputsEnabled = false;
     }
 
     @Override
     public void windowStateChanged(WindowEvent e) {
-        // Detect if the window has been minimized
         if (e.getNewState() == Frame.ICONIFIED) {
-            System.out.println("Game window minimized.");
             inputsEnabled = false;
         } else if (e.getNewState() == Frame.NORMAL || e.getNewState() == Frame.MAXIMIZED_BOTH) {
-            System.out.println("Game window restored.");
             inputsEnabled = true;
         }
     }
